@@ -1,37 +1,42 @@
-(function () {
-  const viewport = document.getElementById('mainViewport');
-  const panel = document.getElementById('centerPanelToggle');
-  const prompt = document.getElementById('clickPrompt');
-  const container = document.getElementById('contentContainer');
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('SCRIPT READY');
 
-  let step = 0;
+    const panel = document.getElementById('centerPanelToggle');
+    const prompt = document.getElementById('clickPrompt');
+    const container = document.getElementById('contentContainer');
 
-  viewport.addEventListener('click', function (e) {
-    if (step === 0) {
-      prompt.style.display = 'none';
-      panel.classList.add('is-visible');
+    let step = 0;
 
-      step = 1;
-      e.stopPropagation();
-    }
-  });
+    document.addEventListener('click', function (e) {
+        console.log('CLICK', step);
 
-  panel.addEventListener('click', function (e) {
-    if (step === 1) {
-      panel.style.animation = 'none';
+        if (step === 0) {
+            prompt.style.display = 'none';
+            panel.classList.add('is-visible');
 
-      void panel.offsetWidth;
+            step = 1;
+            return;
+        }
 
-      requestAnimationFrame(function () {
-        panel.classList.add('is-hidden');
-        container.classList.add('main-content-active');
-      });
+        if (step === 1) {
+            if (panel.contains(e.target)) {
+                panel.style.animation = 'none';
 
-      step = 2;
-      e.stopPropagation();
-    } else if (step === 2) {
-      panel.classList.toggle('is-hidden');
-      e.stopPropagation();
-    }
-  });
-})();
+                void panel.offsetWidth;
+
+                requestAnimationFrame(function () {
+                    panel.classList.add('is-hidden');
+                    container.classList.add('main-content-active');
+                });
+
+                step = 2;
+            }
+
+            return;
+        }
+
+        if (step === 2 && panel.contains(e.target)) {
+            panel.classList.toggle('is-hidden');
+        }
+    });
+});

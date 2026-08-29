@@ -1,0 +1,1333 @@
+*,*::before,*::after {
+    box-sizing: border-box;
+}
+
+html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #EEEEEE;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Inter', sans-serif;
+}
+
+/* =========================================
+   Animation
+   ========================================= */
+
+@keyframes panGrid {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 40px 40px;
+    }
+}
+
+@keyframes rotateCw {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotateCcw {
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+@keyframes glitchBlink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.1;
+    }
+
+    60% {
+        opacity: 0.8;
+    }
+
+    70% {
+        opacity: 0.2;
+    }
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes pulseDot {
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+@keyframes panelPop {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.85);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+@keyframes hintPulse {
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes mainObjectAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================
+   레이아웃 및 배경
+   ========================================= */
+
+.grid-background-infinite {
+    background-color: #EEEEEE;
+    background-image:
+        linear-gradient(
+            to right,
+            rgba(0, 63, 192, 0.12) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            to bottom,
+            rgba(0, 63, 192, 0.12) 1px,
+            transparent 1px
+        );
+    background-size: 40px 40px;
+    background-position: center center;
+    animation: panGrid 3s linear infinite;
+}
+
+.figma-viewport {
+    position: fixed;
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.figma-scale {
+    position: relative;
+
+    width: 1920px;
+    height: 1080px;
+
+    flex: 0 0 1920px;
+    transform-origin: center center;
+}
+
+.figma-scale img,
+.figma-scale svg {
+    display: block;
+}
+
+@media (max-aspect-ratio: 16/9) {
+    .figma-scale {
+        transform: scale(calc(100vw / 1920));
+    }
+}
+
+@media (min-aspect-ratio: 16/9) {
+    .figma-scale {
+        transform: scale(calc(100vh / 1080));
+    }
+}
+
+/* =========================================
+   호버 상호작용
+   ========================================= */
+
+.Frame47,
+.Frame48 {
+    cursor: pointer;
+    z-index: 100;
+}
+
+.Frame48 .Vector38 path,
+.Frame48 .VectorSvg path,
+.Frame48 .Background,
+.Frame48 .HorizontalDivider,
+.Frame48 [data-layer="가나다라마바"],
+.Frame48 [data-layer="가나다라마바 가나다라마바"],
+.Frame47 .Rectangle161,
+.Frame47 .VectorSvg path,
+.Frame47 [data-layer="가나다라마바 가나다라마바"] {
+    transition:
+        fill 0.2s ease,
+        stroke 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.Frame48:hover .Vector38 path {
+    fill: #003FC0;
+    fill-opacity: 1;
+}
+
+.Frame48:hover .VectorSvg path {
+    stroke: #003FC0;
+}
+
+.Frame48:hover .Background {
+    background: transparent !important;
+}
+
+.Frame48:hover .HorizontalDivider {
+    border-bottom-color: white !important;
+}
+
+.Frame48:hover [data-layer="가나다라마바"],
+.Frame48:hover [data-layer="가나다라마바 가나다라마바"],
+.Frame48:hover [data-layer="가나다라마바"] span,
+.Frame48:hover [data-layer="가나다라마바 가나다라마바"] span {
+    color: white !important;
+}
+
+.Frame47:hover .Rectangle161 {
+    background: #003FC0 !important;
+    border-color: #003FC0 !important;
+}
+
+.Frame47:hover .VectorSvg path {
+    stroke: #003FC0;
+}
+
+.Frame47:hover [data-layer="가나다라마바 가나다라마바"],
+.Frame47:hover [data-layer="가나다라마바 가나다라마바"] span {
+    color: white !important;
+}
+
+/* =========================================
+   중앙 패널 및 오버레이
+   ========================================= */
+
+.CenterPanelToggle {
+    position: absolute;
+
+    left: 50%;
+    top: 144px;
+
+    width: 1518px;
+    height: 792px;
+
+    z-index: 1000;
+
+    transform: translateX(-50%);
+    transition:
+        transform 0.8s cubic-bezier(.22, .61, .36, 1),
+        opacity 0.5s ease;
+
+    cursor: pointer;
+    display: none;
+}
+
+.CenterPanelToggle.is-visible {
+    display: block;
+    animation: panelPop 0.6s cubic-bezier(.22, .61, .36, 1) forwards;
+}
+
+.CenterPanelToggle .CenterPanel {
+    position: absolute;
+
+    width: 1518px;
+    height: 920px;
+
+    background: rgb(0 63 192 / 54%);
+    border: 2px solid #003FC0;
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 0 40px rgba(0, 63, 192, 0.3);
+}
+
+.CenterPanelToggle .CenterPanel::before {
+    content: 'CLICK TO OPEN SYSTEM';
+
+    position: absolute;
+
+    left: 50%;
+    top: -30px;
+
+    width: 1518px;
+    height: 28px;
+
+    transform: translateX(-50%);
+
+    background: #003FC0;
+    border: 2px solid #003FC0;
+    border-bottom: 0;
+
+    color: #FFFFFF;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.CenterPanelToggle.is-hidden {
+    transform: translate(
+        -50%,
+        calc(100vh - 144px - 14px)
+    );
+}
+
+.click-prompt {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    z-index: 2000;
+
+    transform: translate(-50%, -50%);
+
+    color: #003FC0;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 6px;
+
+    pointer-events: none;
+    animation: hintPulse 2s infinite;
+    text-align: center;
+}
+
+/* =========================================
+   등장 및 기타 애니메이션 유틸리티
+   ========================================= */
+
+.main-content-element {
+    opacity: 0;
+    transform: translateY(15px);
+}
+
+.main-content-active .main-content-element {
+    animation: mainObjectAppear 0.6s ease forwards;
+    animation-delay: var(--delay, 0s);
+}
+
+.anim-blink {
+    animation: glitchBlink 3s infinite;
+}
+
+.anim-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+.anim-float-delay {
+    animation: float 5s ease-in-out infinite 1s;
+}
+
+/* =========================================
+   추출된 디자인 클래스
+   ========================================= */
+
+.abs {
+    position: absolute;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.col-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.row-flex {
+    display: flex;
+    align-items: center;
+}
+
+.txt-center {
+    text-align: center;
+}
+
+.txt-right {
+    text-align: right;
+}
+
+/* =========================================
+   Main Container & HUD
+   ========================================= */
+
+.content-container {
+    position: relative;
+
+    width: 1920px;
+    height: 1080px;
+
+    overflow: hidden;
+}
+
+.back-hud-wrap {
+    width: 1920px;
+    height: 1080px;
+
+    left: 0px;
+    top: 0px;
+
+    pointer-events: none;
+}
+
+.HudCircle {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.HudCircle:nth-child(1) {
+    border: 2px dashed rgba(0, 63, 192, 0.40) !important;
+    animation: rotateCw 20s linear infinite;
+}
+
+.HudCircle:nth-child(2) {
+    border: 2px dotted rgba(0, 63, 192, 0.50) !important;
+    animation: rotateCcw 30s linear infinite;
+}
+
+.HudCircle:nth-child(3) {
+    border: 1px dashed rgba(0, 63, 192, 0.30) !important;
+    animation: rotateCw 15s linear infinite;
+}
+
+.hc-1 {
+    width: 900px;
+    height: 900px;
+    left: 510px;
+    top: 90px;
+}
+
+.hc-2 {
+    width: 620px;
+    height: 620px;
+    left: 650px;
+    top: 230px;
+}
+
+.hc-3 {
+    width: 350px;
+    height: 350px;
+    left: 785px;
+    top: 365px;
+}
+
+.cc-h {
+    width: 1920px;
+    height: 1px;
+
+    left: 0px;
+    top: 540px;
+
+    background: rgba(0, 63, 192, 0.25);
+}
+
+.cc-v {
+    width: 1px;
+    height: 1080px;
+
+    left: 960px;
+    top: 0px;
+
+    background: rgba(0, 63, 192, 0.25);
+}
+
+.frame-box {
+    width: 120px;
+    height: 120px;
+
+    border: 1px solid rgba(0, 63, 192, 0.35);
+}
+
+.fb-tl {
+    left: 30px;
+    top: 30px;
+}
+
+.fb-tr {
+    left: 1770px;
+    top: 30px;
+}
+
+.fb-bl {
+    left: 30px;
+    top: 930px;
+}
+
+.fb-br {
+    left: 1770px;
+    top: 930px;
+}
+
+.measure-wrap {
+    width: 40px;
+    height: 320px;
+
+    top: 380px;
+
+    border: 1px solid rgba(0, 63, 192, 0.35);
+}
+
+.mw-l {
+    left: 80px;
+}
+
+.mw-r {
+    left: 1800px;
+}
+
+.measure-line {
+    width: 2px;
+    height: 288px;
+
+    background: rgba(0, 63, 192, 0.50);
+}
+
+/* =========================================
+   Figma Grid Group
+   ========================================= */
+
+.figma-grid-wrap {
+    position: relative;
+
+    width: 1920px;
+    height: 1080px;
+
+    overflow: hidden;
+}
+
+.f48-box {
+    width: 474px;
+    height: 257px;
+    left: 1096px;
+    top: 365px;
+}
+
+.f48-v38-box {
+    left: 195px;
+    top: 5px;
+}
+
+.f48-vsvg-box {
+    width: 454px;
+    height: 278px;
+
+    left: 0px;
+    top: -21px;
+
+    overflow: hidden;
+}
+
+.f48-vec-box {
+    left: 0.50px;
+    top: 26px;
+}
+
+.f48-bg-box {
+    width: 241px;
+    height: 40px;
+
+    left: 203px;
+    top: 15px;
+
+    background: black;
+}
+
+.f48-div-box {
+    width: 241px;
+    height: 2px;
+
+    left: 203px;
+    top: 61px;
+
+    border-bottom: 2px black solid;
+}
+
+.f48-txt-box {
+    width: 120.20px;
+    height: 52px;
+
+    left: 213px;
+    top: 78px;
+
+    justify-content: center;
+}
+
+.txt-blk-20 {
+    color: black;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 700;
+    line-height: 28px;
+    word-wrap: break-word;
+}
+
+.txt-blu-20 {
+    color: #003FC0;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 700;
+    line-height: 28px;
+    word-wrap: break-word;
+}
+
+.f47-box {
+    width: 414px;
+    height: 168px;
+
+    left: 395px;
+    top: 255px;
+}
+
+.f47-rect-box {
+    width: 261px;
+    height: 141px;
+
+    left: -75px;
+    top: -78px;
+
+    background: rgba(238, 238, 238, 0.40);
+    border: 2px black solid;
+
+    backdrop-filter: blur(2px);
+}
+
+.f47-vsvg-box {
+    width: 487px;
+    height: 103px;
+
+    left: -84px;
+    top: 72px;
+
+    overflow: hidden;
+}
+
+.f47-vec-box {
+    left: -0.50px;
+    top: 0.53px;
+}
+
+.f47-txt-box {
+    width: 120.20px;
+    height: 52px;
+
+    left: -48px;
+    top: -33px;
+
+    justify-content: center;
+}
+
+/* =========================================
+   Corners
+   ========================================= */
+
+.corner-anim-tl {
+    left: 22px;
+    top: 14px;
+}
+
+.corner-anim-tr {
+    left: 1858px;
+    top: 14px;
+}
+
+/* =========================================
+   Small Text Layout
+   ========================================= */
+
+.stl-wrap {
+    width: 1920px;
+    height: 1080px;
+
+    left: 0px;
+    top: 0px;
+
+    pointer-events: none;
+}
+
+.sys-num-txt {
+    width: 83px;
+
+    left: 67px;
+    top: 45px;
+
+    color: black;
+    font-size: 80px;
+    font-family: Orbitron;
+    font-weight: 700;
+    line-height: 80px;
+    letter-spacing: 6px;
+    word-wrap: break-word;
+}
+
+.sub-txt-1 {
+    left: 155px;
+    top: 45px;
+
+    color: black;
+    font-size: 32px;
+    font-family: Rajdhani;
+    font-weight: 400;
+    line-height: 40.96px;
+    letter-spacing: 4px;
+    word-wrap: break-word;
+}
+
+.sub-txt-2 {
+    left: 155px;
+    top: 86px;
+
+    color: black;
+    font-size: 20px;
+    font-family: Rajdhani;
+    font-weight: 400;
+    line-height: 25.80px;
+    letter-spacing: 3px;
+    word-wrap: break-word;
+}
+
+.vert-txt-jp {
+    width: 25.60px;
+
+    left: 155px;
+    top: 205px;
+
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+
+    color: black;
+    font-size: 13.60px;
+    font-family: Rajdhani;
+    font-weight: 300;
+    line-height: 15.64px;
+    letter-spacing: 5px;
+    word-wrap: break-word;
+}
+
+.date-left {
+    left: 60px;
+    top: 1030px;
+
+    color: #003FC0;
+    font-size: 16px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.date-right {
+    left: 1730px;
+    top: 1030px;
+
+    color: #003FC0;
+    font-size: 16px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+/* =========================================
+   Top Hello
+   ========================================= */
+
+.hello-wrap {
+    width: 110px;
+    height: 28px;
+
+    left: 905px;
+    top: 45px;
+
+    background: #003FC0;
+}
+
+.hello-txt {
+    color: #EEEEEE;
+    font-size: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+/* =========================================
+   Earth Status
+   ========================================= */
+
+.es-wrap {
+    left: 1580px;
+    top: 45px;
+}
+
+.es-lbl {
+    color: #000000;
+    font-size: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 4px;
+}
+
+.es-val {
+    color: #003FC0;
+    font-size: 28px;
+    font-family: sans-serif;
+    font-weight: 700;
+    letter-spacing: 8px;
+    margin-top: 5px;
+}
+
+/* =========================================
+   Main Image Box
+   ========================================= */
+
+.img-wrap {
+    width: 601px;
+    height: 863px;
+
+    left: 633px;
+    top: 217px;
+
+    background: #FFFFFF;
+    border: 2px solid #003FC0;
+    box-shadow: 6px 6px 0px rgba(0, 63, 192, 0.2);
+}
+
+.img-txt {
+    color: #003FC0;
+    font-size: 28px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 3px;
+}
+
+.img-sub-txt {
+    font-size: 18px;
+    color: #000000;
+    font-weight: 400;
+}
+
+/* =========================================
+   Left Title Area
+   ========================================= */
+
+.lt-wrap {
+    left: 150px;
+    top: 580px;
+}
+
+.lt-icons {
+    color: #003FC0;
+    font-size: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 8px;
+    margin-bottom: 8px;
+}
+
+.lt-hero {
+    color: #003FC0;
+    font-size: 68px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: 2px;
+}
+
+.lt-line-grp {
+    gap: 0px;
+    margin-top: 15px;
+}
+
+.lt-dot {
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+    background: #003FC0;
+}
+
+.lt-bar {
+    width: 380px;
+    height: 5px;
+
+    background: #003FC0;
+}
+
+/* =========================================
+   Left Dots List
+   ========================================= */
+
+.ld-wrap {
+    left: 60px;
+    top: 834px;
+
+    gap: 10px;
+}
+
+.ld-circle {
+    width: 14px;
+    height: 14px;
+
+    border-radius: 50%;
+    border: 2px solid #003FC0;
+}
+
+.ld-fill {
+    background: #003FC0;
+    border: none;
+}
+
+/* =========================================
+   Frame47 / Frame48 Hover
+   ========================================= */
+
+.f47-box:hover .f47-txt-box,
+.f47-box:hover .f47-txt-box *,
+.f48-box:hover .f48-txt-box,
+.f48-box:hover .f48-txt-box * {
+    color: #ffffff !important;
+    transition: color 0.2s ease;
+}
+
+.f48-bg-box .f48-hover-txt {
+    width: 100%;
+    height: 100%;
+
+    margin: 7px 9px 0px;
+
+    display: flex;
+
+    color: #ffffff !important;
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+.f48-box:hover .f48-bg-box .f48-hover-txt {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* =========================================
+   404 Section
+   ========================================= */
+
+.err404-wrap {
+    width: 220px;
+
+    left: 211px;
+    top: 423px;
+}
+
+.err404-head {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    padding-bottom: 4px;
+    border-bottom: 2px solid #003FC0;
+}
+
+.err404-num {
+    color: #003FC0;
+    font-size: 36px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.err404-col {
+    color: #003FC0;
+    font-size: 28px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.err404-msg {
+    color: #000000;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    line-height: 1.5;
+
+    margin-top: 10px;
+}
+
+/* =========================================
+   Server Error Box
+   ========================================= */
+
+.svr-box {
+    width: 227px;
+    height: 109px;
+
+    left: 264px;
+    top: 841.79px;
+
+    background: rgba(240, 242, 245, 0.80);
+
+    outline: 2.40px black solid;
+    outline-offset: -2.40px;
+}
+
+.svr-msg {
+    width: 114.60px;
+
+    left: 60.20px;
+    top: 34.90px;
+
+    color: black;
+    font-size: 14px;
+    font-family: JetBrains Mono;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 19.60px;
+    word-wrap: break-word;
+}
+
+/* =========================================
+   B-W Rotation
+   ========================================= */
+
+.bw-rot {
+    width: 0px;
+
+    left: 355px;
+    top: 759px;
+
+    transform: rotate(-90deg);
+    transform-origin: top left;
+
+    color: black;
+    font-size: 24px;
+    font-family: Orbitron;
+    font-weight: 700;
+    line-height: 24px;
+    word-wrap: break-word;
+}
+
+/* =========================================
+   Access Section
+   ========================================= */
+
+.acc-wrap {
+    width: 466.23px;
+    height: 90px;
+
+    left: 80px;
+    top: 931.79px;
+}
+
+.acc-txt {
+    left: 0px;
+    top: 0px;
+
+    color: black;
+    font-size: 90px;
+    font-family: Orbitron;
+    font-weight: 700;
+    line-height: 90px;
+    word-wrap: break-word;
+}
+
+.acc-img {
+    width: 150px;
+    height: 30px;
+
+    left: 316.22px;
+    top: 49.20px;
+}
+
+.acc-svg-pos {
+    left: 320px;
+    top: 821.79px;
+}
+
+.acc-blk-bar {
+    width: 210.15px;
+    height: 42px;
+
+    left: 240px;
+    top: 941.79px;
+
+    background: black;
+}
+
+/* =========================================
+   Right HUD Bar
+   ========================================= */
+
+.rh-wrap {
+    left: 1300px;
+    top: 675px;
+
+    gap: 10px;
+}
+
+.rh-circle {
+    width: 14px;
+    height: 14px;
+
+    border-radius: 50%;
+    border: 2px solid #003FC0;
+}
+
+.rh-prog {
+    width: 50px;
+    height: 12px;
+
+    background: repeating-linear-gradient(
+        90deg,
+        #003FC0,
+        #003FC0 3px,
+        transparent 3px,
+        transparent 6px
+    );
+}
+
+.rh-txt {
+    color: #003FC0;
+    font-size: 16px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+
+    margin-left: 10px;
+}
+
+/* =========================================
+   Reconnect Message
+   ========================================= */
+
+.recon-msg {
+    width: 220px;
+
+    left: 1550px;
+    top: 660px;
+
+    color: #000000;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+/* =========================================
+   A-O Section
+   ========================================= */
+
+.ao-wrap {
+    width: 260px;
+
+    left: 1170px;
+    top: 159px;
+}
+
+.ao-hdr {
+    color: #003FC0;
+    font-size: 24px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+}
+
+.ao-txt {
+    color: #000000;
+    font-size: 9px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    line-height: 1.3;
+
+    margin-top: 6px;
+}
+
+.ao-grp {
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.ao-box-item {
+    width: 18px;
+    height: 18px;
+
+    border: 1px solid #003FC0;
+}
+
+.ao-x-txt {
+    color: #003FC0;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* =========================================
+   Reset Panel
+   ========================================= */
+
+.rst-panel {
+    width: 100px;
+    height: 583.20px;
+
+    left: 1540px;
+    top: 220px;
+
+    background: #111111;
+}
+
+.rst-char {
+    color: #F0F2F5;
+    font-size: 64px;
+    font-family: Orbitron;
+    font-weight: 700;
+    line-height: 57.60px;
+}
+
+.rst-c1 {
+    left: 62.30px;
+    top: 18.80px;
+}
+
+.rst-c2 {
+    left: 64.30px;
+    top: 76.40px;
+}
+
+.rst-c3 {
+    left: 62.30px;
+    top: 134px;
+}
+
+.rst-c4 {
+    left: 64.30px;
+    top: 191.60px;
+}
+
+.rst-c5 {
+    left: 64.30px;
+    top: 249.20px;
+}
+
+.rst-c6 {
+    left: 64.30px;
+    top: 306.80px;
+}
+
+.rst-c7 {
+    left: 64.30px;
+    top: 364.40px;
+}
+
+/* =========================================
+   Bottom Right Deco
+   ========================================= */
+
+.xxx-mark {
+    left: 1650px;
+    top: 260px;
+
+    color: #003FC0;
+    font-size: 48px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    letter-spacing: 10px;
+}
+
+.plus-mark {
+    left: 1600px;
+    top: 870px;
+
+    color: #003FC0;
+    font-size: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 12px;
+    line-height: 1.2;
+}
+
+/* =========================================
+   Center Panel Text
+   ========================================= */
+
+.cp-inner-box {
+    text-align: center;
+
+    color: #FFFFFF;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.cp-ready-txt {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 8px;
+}
+
+.cp-press-txt {
+    margin-top: 10px;
+
+    font-size: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    opacity: 0.8;
+    letter-spacing: 3px;
+}

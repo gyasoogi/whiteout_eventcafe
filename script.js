@@ -1,3 +1,5 @@
+import { FilesetResolver, FaceDetector } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/vision_bundle.mjs';
+
 document.addEventListener('DOMContentLoaded', function () {
     console.log('SCRIPT READY');
 
@@ -150,8 +152,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const { FaceDetector, FilesetResolver } = window;
-
             if (!FaceDetector || !FilesetResolver) {
                 throw new Error('MediaPipe 라이브러리가 로드되지 않았습니다. CDN 로딩 실패 또는 브라우저 보안 차단입니다.');
             }

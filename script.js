@@ -1,5 +1,3 @@
-import { FilesetResolver, FaceDetector } from './node_modules/@mediapipe/tasks-vision/vision_bundle.mjs';
-
 document.addEventListener('DOMContentLoaded', function () {
     console.log('SCRIPT READY');
 
@@ -17,16 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let faceTriggerCooldown = 0;
     let isFaceHoldLocked = false;
     let faceLostAt = null;
-
-    function resetSystemToDefault() {
-        if (!panel || !container || !prompt) return;
-
-        step = 0;
-        panel.classList.remove('is-visible', 'is-hidden');
-        panel.style.animation = '';
-        container.classList.remove('main-content-active');
-        prompt.style.display = 'block';
-    }
 
     function resetSystemToDefault() {
         if (!panel || !container || !prompt) return;
@@ -162,8 +150,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
+            const { FaceDetector, FilesetResolver } = window;
+
             if (!FaceDetector || !FilesetResolver) {
-                throw new Error('MediaPipe 라이브러리가 로드되지 않았습니다.');
+                throw new Error('MediaPipe 라이브러리가 로드되지 않았습니다. CDN 로딩 실패 또는 브라우저 보안 차단입니다.');
             }
 
             const stream = await navigator.mediaDevices.getUserMedia({
